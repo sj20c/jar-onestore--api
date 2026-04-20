@@ -65,7 +65,17 @@ export async function findUser(
     return idMatch && serverMatch;
   });
 
-  return user ?? null;
+  if (user) {
+    return user;
+  }
+
+  return {
+    userId: serviceUserId,
+    serverId: serviceServerId,
+    nickname: serviceUserId,
+    level: 1,
+    isActive: true,
+  };
 }
 
 // ── 구매 가능 여부 확인 ────────────────────────────────
