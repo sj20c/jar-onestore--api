@@ -12,6 +12,10 @@ router.get('/check', (_req: Request, res: Response) => {
   });
 });
 
+router.options('/check', (_req: Request, res: Response) => {
+  return res.sendStatus(200);
+});
+
 /**
  * POST /gameuser/check
  * 원스토어 웹샵 유효성 검증
@@ -24,7 +28,7 @@ router.post('/check', async (req: Request, res: Response, next) => {
 
     // ── 1. 필수 파라미터 확인 ────────────────────────────
     if (!param?.clientId || !param?.prodId || !param?.serviceUserId || !signature) {
-      return res.status(400).json({
+      return res.status(200).json({
         result: { code: '9999', message: 'Missing required parameters' },
       });
     }
@@ -32,7 +36,7 @@ router.post('/check', async (req: Request, res: Response, next) => {
     // ── 2. Signature 검증 ────────────────────────────────
     const isValidSig = validateSignature(param, signature);
     if (!isValidSig) {
-      return res.status(401).json({
+      return res.status(200).json({
         result: { code: '9998', message: 'Invalid signature' },
       });
     }
